@@ -80,4 +80,16 @@ timesheetsRouter.put('/:timesheetId', (req, res, next) => {
     });
 });
 
+timesheetsRouter.delete('/:timesheetId', (req, res, next) => {
+    db.run(`DELETE FROM Timesheet WHERE Timesheet.id = ${req.params.timesheetId}`, (err) => {
+        if (err) {
+            next(err)
+        } else {
+            db.get(`SELECT * FROM Timesheet WHERE Timesheet.id = ${req.params.timesheetId}`, (err, timesheet) => {
+                res.status(204).json({ timesheet: timesheet })
+            });
+        }
+    });
+});
+
 module.exports = timesheetsRouter;
